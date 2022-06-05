@@ -33,13 +33,14 @@ public class Graph<K>{
             }
         }
         for(Vertice vertex : vertices){
-            for(int i = 0; i < vertex.getEdges().size(); i++){
+            for(int i = 0; i < vertex.getEdges().size()-1; i++){
+                System.out.println(i);
                 if(vertex.getEdges().get(i) instanceof Edge){
-                    if((((Edge<?>) vertex.getEdges().get(i)).getWeight()) < (dis[(int)vertex.getKey()][(int) ( (Edge<Integer>)vertex.getEdges().get(i)).getEnd().getKey()])){
-                        dis[(int)vertex.getKey()][(int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()] = (((Edge<?>) vertex.getEdges().get(i)).getWeight());
+                    if((((Edge<?>) vertex.getEdges().get(i)).getWeight()) < (dis[(int)vertex.getKey()-1][(int) ( (Edge<Integer>)vertex.getEdges().get(i)).getEnd().getKey()-1])){
+                        dis[(int)vertex.getKey()-1][(int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()-1] = (((Edge<?>) vertex.getEdges().get(i)).getWeight());
                     }
-                    //System.out.println((int)vertex.getKey()-1 + " , "+ ((int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()-1));
-                    //System.out.println(dis[(int)vertex.getKey()-1][(int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()-1]);
+                    //System.out.println((int)vertex.getKey() + " , "+ ((int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()));
+                    //System.out.println(dis[(int)vertex.getKey()][(int) ((Edge<Integer>) vertex.getEdges().get(i)).getEnd().getKey()]);
                 }
             }
         }
@@ -81,8 +82,8 @@ public class Graph<K>{
             pathOut+=(path.get(i)) + ",";
             System.out.print(path.get(i) + ",");
         }
-        pathOut+=(path.get(n-1));
-        System.out.print(path.get(n - 1) + "\n");
+            pathOut+=(path.get(n-1));
+            System.out.print(path.get(n - 1) + "\n");
         return pathOut;
 
     }
@@ -128,6 +129,7 @@ public class Graph<K>{
                     }
                 }
                 Edge<K> edge = queue.poll();
+                System.out.println(edge);
                 if(!edge.getEnd().isVisited()){
                     System.out.println("Entra");
                     edge.getEnd().setVisited(true);
@@ -137,6 +139,8 @@ public class Graph<K>{
                 }
             }
             return nGraph;
+        }else{
+            System.out.println("No se encuentra el origen");
         }
         return null;
     }
@@ -218,9 +222,17 @@ public class Graph<K>{
         boolean exist = false;
         Vertice<K> v = null;
         for(int i = 0; i<vertices.size() && !exist; i++){
-            if(vertices.get(i).getKey() == key){
-                exist = true;
-                v = vertices.get(i);
+            if(key.getClass() == String.class){
+                System.out.println(vertices.get(i).getKey() + " - " + key + " " + vertices.get(i).getKey().equals(key));
+                if(vertices.get(i).getKey().equals(key)){
+                    exist = true;
+                    v = vertices.get(i);
+                }
+            }else{
+                if(vertices.get(i).getKey() == key){
+                    exist = true;
+                    v = vertices.get(i);
+                }
             }
         }
         return v;
